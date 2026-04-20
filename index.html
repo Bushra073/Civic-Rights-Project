@@ -1,25 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Civic Rights & Safety Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Report a Civic Issue</h1>
-    <form id="complaintForm">
-        <input type="text" id="title" placeholder="What is the issue?" required><br><br>
-        <select id="category">
-            <option value="Road Safety">Road Safety</option>
-            <option value="Public Harassment">Public Harassment</option>
-            <option value="Infrastructure">Infrastructure</option>
-        </select><br><br>
-        <textarea id="description" placeholder="Describe the problem"></textarea><br><br>
-        <button type="submit">Submit Complaint</button>
-    </form>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-blue-600 mb-6 text-center">Civic Rights & Safety Hub</h1>
+        
+        <form id="complaintForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Issue Title</label>
+                <input type="text" id="title" placeholder="e.g. Broken Streetlight" required
+                    class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="category" 
+                    class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    <option value="Road Safety">Road Safety</option>
+                    <option value="Public Harassment">Public Harassment</option>
+                    <option value="Infrastructure">Infrastructure</option>
+                    <option value="Consumer Fraud">Consumer Fraud</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" rows="3" placeholder="Describe the problem in detail..."
+                    class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
+                Submit Complaint
+            </button>
+        </form>
+    </div>
 
     <script>
         document.getElementById('complaintForm').onsubmit = (e) => {
             e.preventDefault();
-            alert("This will eventually send data to our database!");
+            alert("Success! Form is styled and ready for the backend.");
         };
     </script>
 </body>
