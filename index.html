@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Civic Rights & Safety Hub</title>
+</head>
+<body>
+    <h1>Report a Civic Issue</h1>
+    <form id="complaintForm">
+        <input type="text" id="title" placeholder="What is the issue?" required><br><br>
+        <select id="category">
+            <option value="Road Safety">Road Safety</option>
+            <option value="Public Harassment">Public Harassment</option>
+            <option value="Infrastructure">Infrastructure</option>
+        </select><br><br>
+        <textarea id="description" placeholder="Describe the problem"></textarea><br><br>
+        <button type="submit">Submit Complaint</button>
+    </form>
+
+    <script>
+        document.getElementById('complaintForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert("This will eventually send data to our database!");
+        };
+    </script>
+</body>
+</html>
