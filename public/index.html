@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -144,8 +144,134 @@
     }
 };
 
+</script>
+</body>
+</html> -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Civic Rights & Safety Hub</title>
+</head>
+<body class="bg-slate-50 font-sans">
 
+    <nav class="bg-blue-700 p-4 text-white shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold italic">CivicGuard Hub</h1>
+            <p class="text-sm">Your Voice, Your Rights, Your Safety.</p>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-10 px-6 grid md:grid-cols-2 gap-12 items-center">
+        
+        <div>
+            <h2 class="text-4xl font-extrabold text-slate-800 mb-4">Ensuring a Safer Community for Everyone.</h2>
+            <p class="text-lg text-slate-600 mb-6">
+                Report civic hazards, consumer violations, or safety concerns in seconds. 
+                We ensure your voice reaches the right authority with full transparency and tracking.
+            </p>
+            <div class="space-y-4">
+                <div class="flex items-center text-green-600 font-semibold italic">
+                    ✅ 100% Accountable Tracking
+                </div>
+                <div class="flex items-center text-green-600 font-semibold italic">
+                    ✅ Secured Data Storage
+                </div>
+                <div class="flex items-center text-green-600 font-semibold italic">
+                    ✅ Direct Authority Response
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-xl shadow-2xl border border-slate-100">
+            <div class="flex mb-6 border-b">
+                <button id="loginTab" class="w-1/2 py-2 font-bold text-blue-600 border-b-2 border-blue-600" onclick="toggleAuth('login')">Login</button>
+                <button id="registerTab" class="w-1/2 py-2 font-bold text-slate-400 hover:text-blue-600" onclick="toggleAuth('register')">Register</button>
+            </div>
+
+            <form id="authForm" class="space-y-4">
+                <h3 id="formTitle" class="text-xl font-bold text-slate-700 hidden">Create Account</h3>
+                
+                <div id="nameField" class="hidden">
+                    <input type="text" id="userName" placeholder="Full Name" class="w-full p-3 border rounded-lg focus:outline-blue-500">
+                </div>
+
+                <input type="email" id="userEmail" placeholder="Email Address" required class="w-full p-3 border rounded-lg focus:outline-blue-500">
+                <input type="password" id="userPassword" placeholder="Password" required class="w-full p-3 border rounded-lg focus:outline-blue-500">
+                
+                <div id="roleField" class="hidden">
+                    <label class="text-sm text-gray-500 ml-1">Select Your Role</label>
+                    <select id="userRole" onchange="toggleAdminKey()" class="w-full p-3 border rounded-lg focus:outline-blue-500">
+                        <option value="citizen">Citizen</option>
+                        <option value="authority">Authority</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div id="adminKeyWrapper" class="hidden mt-2">
+                    <label class="text-xs font-bold text-red-600 ml-1 uppercase">Admin Authorization Key</label>
+                    <input type="password" id="adminSecretKey" placeholder="Enter Secret Code" class="w-full p-3 border-2 border-red-100 rounded-lg focus:outline-red-500 bg-red-50">
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg shadow-lg hover:bg-blue-700 transition">
+                    Access My Panel
+                </button>
+            </form>
+            <p class="text-xs text-center text-slate-400 mt-4 italic">Authorized Access Only. Role-based encryption active.</p>
+        </div>
+    </div>
+
+<script>
+    let currentMode = 'login';
+
+    function toggleAdminKey() {
+        const role = document.getElementById('userRole').value;
+        const keyWrapper = document.getElementById('adminKeyWrapper');
+        
+        // Only show the secret key field if Admin is selected during Registration
+        if (role === 'admin' && currentMode === 'register') {
+            keyWrapper.classList.remove('hidden');
+        } else {
+            keyWrapper.classList.add('hidden');
+        }
+    }
+
+    function toggleAuth(mode) {
+        currentMode = mode;
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const nameField = document.getElementById('nameField');
+        const roleField = document.getElementById('roleField');
+        const adminKeyWrapper = document.getElementById('adminKeyWrapper');
+        const submitBtn = document.getElementById('submitBtn');
+        const formTitle = document.getElementById('formTitle');
+
+        if (mode === 'register') {
+            registerTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            registerTab.classList.remove('text-slate-400');
+            loginTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            loginTab.classList.add('text-slate-400');
+            
+            nameField.classList.remove('hidden');
+            roleField.classList.remove('hidden');
+            formTitle.classList.remove('hidden');
+            submitBtn.innerText = "Register Now";
+            toggleAdminKey(); // Check if admin key should show
+        } else {
+            loginTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            loginTab.classList.remove('text-slate-400');
+            registerTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+            registerTab.classList.add('text-slate-400');
+
+            nameField.classList.add('hidden');
+            roleField.classList.add('hidden');
+            adminKeyWrapper.classList.add('hidden'); // Always hide on login
+            formTitle.classList.add('hidden');
+            submitBtn.innerText = "Access My Panel";
+        }
+    }
 
     // document.getElementById('authForm').onsubmit = async (e) => {
     //     e.preventDefault();
@@ -157,6 +283,17 @@
     //         const username = document.getElementById('userName').value;
     //         const role = document.getElementById('userRole').value;
 
+    //         // --- ADMIN SECRET CHECK ---
+    //         if (role === 'admin') {
+    //             const secretInput = document.getElementById('adminSecretKey').value;
+    //             const MASTER_KEY = "SYLHET2026"; // Your presentation secret code
+
+    //             if (secretInput !== MASTER_KEY) {
+    //                 alert("Security Error: Invalid Admin Authorization Key. Registration blocked.");
+    //                 return; 
+    //             }
+    //         }
+
     //         const response = await fetch('http://localhost:3000/register', {
     //             method: 'POST',
     //             headers: { 'Content-Type': 'application/json' },
@@ -164,6 +301,8 @@
     //         });
     //         const result = await response.json();
     //         alert(result.message);
+
+    //         if(response.ok) toggleAuth('login');
     //     } else {
     //         // LOGIN LOGIC
     //         const response = await fetch('http://localhost:3000/login', {
@@ -172,22 +311,65 @@
     //             body: JSON.stringify({ email, password })
     //         });
 
-    //       if (response.ok) {
-    //         const result = await response.json();
-            
-    //         // This is the important new line! 
-    //         // It saves your ID, Username, and Role in the browser's memory.
-    //         localStorage.setItem('user', JSON.stringify(result)); 
-
-    //         alert(`Welcome back, ${result.username}! Redirecting to ${result.role} panel...`);
-    //         // window.location.href = `${result.role}.html`;
-    //         window.location.href = 'dashboard.html';
-    //     } else {
-    //             const errorResult = await response.json();
-    //             alert(errorResult.message || "Login failed.");
+    //         if (response.ok) {
+    //             const result = await response.json();
+    //             localStorage.setItem('user', JSON.stringify(result));
+    //             window.location.href = 'dashboard.html';
+    //         } else {
+    //             alert("Login failed. Check your email/password.");
     //         }
     //     }
     // };
+
+    document.getElementById('authForm').onsubmit = async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('userEmail').value;
+    const password = document.getElementById('userPassword').value;
+
+    if (currentMode === 'register') {
+        const username = document.getElementById('userName').value;
+        const role = document.getElementById('userRole').value;
+        const adminKey = document.getElementById('adminSecretKey').value; // Get the key from input
+
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                username, 
+                email, 
+                password, 
+                role,
+                adminKey: adminKey // Send to backend for validation
+            })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert(result.message);
+            toggleAuth('login');
+        } else {
+            // This will now show the "Security Error" message from your backend
+            alert("Registration Failed: " + result.message);
+        }
+    } else {
+        // LOGIN LOGIC remains the same...
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            localStorage.setItem('user', JSON.stringify(result));
+            window.location.href = 'dashboard.html';
+        } else {
+            alert("Login failed. Check your email/password.");
+        }
+    }
+};
 </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,6 +63,103 @@
                 window.location.href = `${roleNeeded}.html`;
             } else {
                 alert(`Access Denied: Your account does not have ${roleNeeded} privileges.`);
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>CivicGuard Hub | Selection</title>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen flex flex-col font-sans">
+
+    <nav class="border-b border-slate-800 bg-[#1e293b]/50 backdrop-blur-md p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">CivicGuard Dashboard</h1>
+            <div class="flex items-center gap-6">
+                <span id="roleBadge" class="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border"></span>
+                <button onclick="logout()" class="text-slate-400 hover:text-white transition text-sm">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-6 py-16 flex flex-col items-center justify-center">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-white mb-2">Welcome Back, <span id="displayUsername" class="text-indigo-400">User</span></h2>
+            <p class="text-slate-400">Select a portal to continue based on your system credentials.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 w-full max-w-6xl">
+            
+            <div onclick="navigateTo('citizen')" class="group cursor-pointer bg-[#1e293b] border border-slate-700 p-8 rounded-3xl hover:border-indigo-500 transition-all hover:-translate-y-2 shadow-2xl">
+                <div class="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-500/20">
+                    <span class="text-3xl">👤</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Citizen Portal</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Report safety issues, track your complaints, and view resolution status.</p>
+            </div>
+
+            <div onclick="navigateTo('authority')" class="group cursor-pointer bg-[#1e293b] border border-slate-700 p-8 rounded-3xl hover:border-cyan-500 transition-all hover:-translate-y-2 shadow-2xl">
+                <div class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20">
+                    <span class="text-3xl">🛡️</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Authority Panel</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Review incoming cases, update investigation status, and manage resolutions.</p>
+            </div>
+
+            <div onclick="navigateTo('admin')" class="group cursor-pointer bg-[#1e293b] border border-slate-700 p-8 rounded-3xl hover:border-rose-500 transition-all hover:-translate-y-2 shadow-2xl">
+                <div class="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-rose-500/20">
+                    <span class="text-3xl">⚙️</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Admin Control</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Manage system users, view global analytics, and handle system configurations.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Retrieve and Validate User Session
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        if (!user) {
+            window.location.href = 'index.html';
+        } else {
+            // Set UI details
+            document.getElementById('displayUsername').innerText = user.username;
+            
+            const badge = document.getElementById('roleBadge');
+            badge.innerText = user.role;
+            
+            // Set Badge Colors based on role
+            if (user.role === 'admin') {
+                badge.classList.add('bg-rose-500/10', 'text-rose-500', 'border-rose-500/20');
+            } else if (user.role === 'authority') {
+                badge.classList.add('bg-cyan-500/10', 'text-cyan-400', 'border-cyan-500/20');
+            } else {
+                badge.classList.add('bg-indigo-500/10', 'text-indigo-400', 'border-indigo-500/20');
+            }
+        }
+
+        function navigateTo(roleNeeded) {
+            // Logic: Admins have unrestricted access. 
+            // Others are restricted to their matching portal.
+            if (user.role === 'admin') {
+                window.location.href = `${roleNeeded}.html`;
+            } else if (user.role === roleNeeded) {
+                window.location.href = `${roleNeeded}.html`;
+            } else {
+                alert(`ACCESS DENIED: Your ${user.role} account does not have ${roleNeeded} clearance.`);
             }
         }
 

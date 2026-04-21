@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Admin Control | CivicGuard</title>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen">
+
+    <nav class="border-b border-slate-800 bg-[#1e293b]/50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="dashboard.html" class="text-slate-400 hover:text-white transition text-sm">← Back to Hub</a>
+            <h1 class="text-xl font-black uppercase tracking-tighter">System <span class="text-rose-500">Administrator</span></h1>
+            <div class="bg-rose-500/10 text-rose-500 border border-rose-500/20 px-3 py-1 rounded-full text-[10px] font-bold">LEVEL 4 ACCESS</div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-[#1e293b] p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <p class="text-slate-500 text-xs font-bold uppercase mb-2">Total Users</p>
+                <h3 id="statUsers" class="text-4xl font-black text-white">0</h3>
+            </div>
+            <div class="bg-[#1e293b] p-6 rounded-2xl border border-slate-800 shadow-xl">
+                <p class="text-slate-500 text-xs font-bold uppercase mb-2">Total Complaints</p>
+                <h3 id="statComplaints" class="text-4xl font-black text-white">0</h3>
+            </div>
+            <div class="bg-[#1e293b] p-6 rounded-2xl border border-rose-500/20 shadow-xl">
+                <p class="text-rose-500/50 text-xs font-bold uppercase mb-2">Urgent Pending</p>
+                <h3 id="statPending" class="text-4xl font-black text-rose-500">0</h3>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6">Database User Registry</h2>
+        <div class="bg-[#1e293b] rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+            <table class="w-full text-left">
+                <thead class="bg-slate-800/50 text-slate-500 text-[10px] uppercase font-black tracking-widest">
+                    <tr>
+                        <th class="p-6">ID</th>
+                        <th class="p-6">Username</th>
+                        <th class="p-6">Email</th>
+                        <th class="p-6">Role</th>
+                        <th class="p-6 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody" class="divide-y divide-slate-800">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        async function loadAdminData() {
+            // Fetch System Stats (The DBMS "Count" logic)
+            const statsRes = await fetch('http://localhost:3000/admin/stats');
+            const stats = await statsRes.json();
+            document.getElementById('statUsers').innerText = stats.totalUsers;
+            document.getElementById('statComplaints').innerText = stats.totalComplaints;
+            document.getElementById('statPending').innerText = stats.pendingIssues;
+
+            // Fetch User Table
+            const usersRes = await fetch('http://localhost:3000/admin/users');
+            const users = await usersRes.json();
+            const table = document.getElementById('userTableBody');
+            table.innerHTML = '';
+
+            users.forEach(u => {
+                table.innerHTML += `
+                    <tr class="hover:bg-slate-800/30 transition-all">
+                        <td class="p-6 text-slate-500 font-mono text-xs">${u.id}</td>
+                        <td class="p-6 font-bold text-slate-200">${u.username}</td>
+                        <td class="p-6 text-slate-400">${u.email}</td>
+                        <td class="p-6">
+                            <span class="px-2 py-1 rounded bg-slate-800 text-[10px] font-bold text-indigo-400 uppercase border border-indigo-500/20">${u.role}</span>
+                        </td>
+                        <td class="p-6 text-right">
+                            <button onclick="deleteUser(${u.id})" class="text-rose-500 hover:text-white transition-colors text-xs font-bold uppercase tracking-tighter">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function deleteUser(id) {
+            if(confirm("CRITICAL: Delete this user and all associated data?")) {
+                await fetch(`http://localhost:3000/admin/delete-user/${id}`, { method: 'DELETE' });
+                loadAdminData();
+            }
+        }
+
+        loadAdminData();
+    </script>
+</body>
+</html>
