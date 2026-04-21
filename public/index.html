@@ -104,46 +104,90 @@
     }
 
     // This function handles sending the data to your Node.js server
+
     document.getElementById('authForm').onsubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const email = document.getElementById('userEmail').value;
-        const password = document.getElementById('userPassword').value;
+    const email = document.getElementById('userEmail').value;
+    const password = document.getElementById('userPassword').value;
 
-        if (currentMode === 'register') {
-            const username = document.getElementById('userName').value;
-            const role = document.getElementById('userRole').value;
+    if (currentMode === 'register') {
+        const username = document.getElementById('userName').value;
+        const role = document.getElementById('userRole').value;
 
-            const response = await fetch('http://localhost:3000/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, role })
-            });
-            const result = await response.json();
-            alert(result.message);
-        } else {
-            // LOGIN LOGIC
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password, role })
+        });
+        const result = await response.json();
+        alert(result.message);
+    } else {
+        // LOGIN LOGIC
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-          if (response.ok) {
+        if (response.ok) {
             const result = await response.json();
             
-            // This is the important new line! 
-            // It saves your ID, Username, and Role in the browser's memory.
-            localStorage.setItem('user', JSON.stringify(result)); 
+            // 1. Save the user data (including role and ID)
+            localStorage.setItem('user', JSON.stringify(result));
 
-            alert(`Welcome back, ${result.username}! Redirecting to ${result.role} panel...`);
-            window.location.href = `${result.role}.html`;
+            // 2. ALWAYS redirect to dashboard.html regardless of role
+            window.location.href = 'dashboard.html';
         } else {
-                const errorResult = await response.json();
-                alert(errorResult.message || "Login failed.");
-            }
+            alert("Login failed. Check your email/password.");
         }
-    };
+    }
+};
+
+
+
+
+    // document.getElementById('authForm').onsubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     const email = document.getElementById('userEmail').value;
+    //     const password = document.getElementById('userPassword').value;
+
+    //     if (currentMode === 'register') {
+    //         const username = document.getElementById('userName').value;
+    //         const role = document.getElementById('userRole').value;
+
+    //         const response = await fetch('http://localhost:3000/register', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ username, email, password, role })
+    //         });
+    //         const result = await response.json();
+    //         alert(result.message);
+    //     } else {
+    //         // LOGIN LOGIC
+    //         const response = await fetch('http://localhost:3000/login', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ email, password })
+    //         });
+
+    //       if (response.ok) {
+    //         const result = await response.json();
+            
+    //         // This is the important new line! 
+    //         // It saves your ID, Username, and Role in the browser's memory.
+    //         localStorage.setItem('user', JSON.stringify(result)); 
+
+    //         alert(`Welcome back, ${result.username}! Redirecting to ${result.role} panel...`);
+    //         // window.location.href = `${result.role}.html`;
+    //         window.location.href = 'dashboard.html';
+    //     } else {
+    //             const errorResult = await response.json();
+    //             alert(errorResult.message || "Login failed.");
+    //         }
+    //     }
+    // };
 </script>
 </body>
 </html>
