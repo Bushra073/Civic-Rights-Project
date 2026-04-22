@@ -5,15 +5,7 @@ Group Number: 2
 Course Name: Database Management System Lab
 Instructor: Fahmidur Rahman Sakib (Lecturer, Department of Computer Science & Technolgy, Metropolitan University)
 
-Group Details:
-______________________________________________________________________________________________
-| Name	              |         ID	        |            Contribution                        |
-| -------------------------------------------------------------------------------------------|
-| Bushra Salsabil     |    	 241-115-073    |        Database administrator                  | 
-| Ayesha Choudhury	  |      241-115-065	  |        Frontend Developer & Project Visionary  |
-| Aysha Mohammed	    |      241-115-081	  |        Security, analytics & quality assurance |
-| Nusrat Jahan Nuva	  |      241-115-082	  |        Backend & System Integrator             |
-----------------------------------------------------------------------------------------------
+<img width="811" height="217" alt="image" src="https://github.com/user-attachments/assets/beca1f5e-862a-45ef-8053-6e17697f51f8" />
 
 Objective:
 1. Centralize all civic reports.
